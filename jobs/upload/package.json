@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@aws-lite/client": "^0.13.4",
+    "@aws-lite/s3": "^0.1.8",
+    "mime-types": "^2.1.35"
+  }
+}
