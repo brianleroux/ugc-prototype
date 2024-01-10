@@ -25,15 +25,48 @@ export let deploy = {
           BlockPublicPolicy: false,
           IgnorePublicAcls: false,
           RestrictPublicBuckets: false 
+        }
+      }
+    }
+
+    // this is required to make WebsiteConfig be accessible
+    cloudformation.Resources.BucketPolicy = {
+      Type: 'AWS::S3::BucketPolicy',
+      Properties: {
+        Bucket: {
+          Ref: 'PrivateBucket' 
         },
-        /*
-        BucketEncryption: {
-          ServerSideEncryptionConfiguration: [{
-            ServerSideEncryptionByDefault: {
-              SSEAlgorithm: 'AES256'
-            }
+        PolicyDocument: {
+          Version: '2012-10-17',
+          Statement: [{
+            Action: 's3:GetObject',
+            Effect: 'Allow',
+            Resource: {
+              'Fn::Join': ['',["arn:aws:s3:::",{Ref: 'PrivateBucket'},'/*']]
+            },
+            Principal: '*',
           }]
-        }*/
+        }
+      }
+    }
+
+    // adds /_content proxy to make assets appear to be same-origin
+    cloudformation.Resources.HTTP.Properties.DefinitionBody.paths["/_content/{proxy+}"] = {
+      get: {
+        'x-amazon-apigateway-integration': {
+          payloadFormatVersion: '1.0',
+          type: 'http_proxy',
+          httpMethod: "GET",
+          uri: {
+            //http://beginappstaging-privatebucket-1fmhvc535fslv.s3-website-us-west-2.amazonaws.com
+            'Fn::Sub': [
+              'http://${bukkit}.s3-website-${AWS::Region}.amazonaws.com/{proxy}',
+              {bukkit: {Ref: 'PrivateBucket'}}
+            ]
+          },
+          connectionType: "INTERNET",
+          timeoutInMillis: 30000
+        }
       }
     }
 
