@@ -44,7 +44,7 @@ export async function handler (event) {
       Key: `raw/${Key}`,
       File: tmp,
       ContentType,
-      WebsiteRedirectLocation: '/_content/' + fingerprinted
+      WebsiteRedirectLocation: '/_content/_content/' + fingerprinted
     })
 
     // remove the original file

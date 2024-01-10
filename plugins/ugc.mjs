@@ -59,6 +59,8 @@ export let deploy = {
           httpMethod: "GET",
           uri: {
             //http://beginappstaging-privatebucket-1fmhvc535fslv.s3-website-us-west-2.amazonaws.com
+            //_content/2ef1c0933ef14d753d1e38003d528fb9.jpg
+            //_content/2ef1c0933ef14d753d1e38003d528fb9.jpg
             'Fn::Sub': [
               'http://${bukkit}.s3-website-${AWS::Region}.amazonaws.com/{proxy}',
               {bukkit: {Ref: 'PrivateBucket'}}
