@@ -7,7 +7,7 @@ export async function handler (event) {
   let aws = await awsLite()
 
   for (let r of event.Records) {
-    let bail = r.s3.object.key.startsWith('fp') || r.s3.object.key.startsWith('raw')
+    let bail = r.s3.object.key.startsWith('_content') || r.s3.object.key.startsWith('raw')
     if (bail) {
       console.log('ignoring ', r.s3.object.key)
       continue;
