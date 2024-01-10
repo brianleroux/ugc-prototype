@@ -31,7 +31,7 @@ export async function handler (event) {
     console.log('write fingerprinted') 
     await aws.s3.PutObject({ 
       Bucket,
-      Key: `fp/${fingerprinted}`,
+      Key: `_content/${fingerprinted}`,
       File: tmp,
       ContentType,
       CacheControl
@@ -44,7 +44,7 @@ export async function handler (event) {
       Key: `raw/${Key}`,
       File: tmp,
       ContentType,
-      WebsiteRedirectLocation: '/fp/' + fingerprinted
+      WebsiteRedirectLocation: '/_content/' + fingerprinted
     })
 
     // remove the original file
